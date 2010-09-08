@@ -198,8 +198,7 @@ function! <SID>BuildTexPdf(view_results, ...)
         let l:success = 0
         if len(getqflist()) > 0
             copen   " open quickfix window
-            wincmd p " go back to calling buffer
-            .cc     " go to first error
+            1cc     " go to first error
         else
             echohl WarningMsg
             echomsg "compile failed with errors"
@@ -208,6 +207,7 @@ function! <SID>BuildTexPdf(view_results, ...)
     else
         let l:success = 1
         cclose
+        call setpos('.', save_cursor)
         redraw
         echon "successfully compiled"
     endif
@@ -216,9 +216,6 @@ function! <SID>BuildTexPdf(view_results, ...)
     if l:success && a:view_results
         call s:ViewTexPdf()
     endif
-
-    " restore position
-    call setpos('.', save_cursor)
 
 endfunction
 
