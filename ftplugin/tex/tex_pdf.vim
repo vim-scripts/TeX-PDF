@@ -138,6 +138,7 @@ function! <SID>BuildTexPdf(view_results, ...)
     silent setlocal shellpipe=2>&1\ \|\ tee\ %s;exit\ \${PIPESTATUS[0]}
 
     let success = 1
+    call setqflist([]) " clear quickfix
     if filereadable("Makefile")
         " If Makefile is available in current working directory, run 'make' with arguments
         echon "compiling using Makefile ..."
@@ -179,15 +180,15 @@ function! <SID>BuildTexPdf(view_results, ...)
         let l:special_tex_compiler = "rubber"
         if executable(l:special_tex_compiler)
             echon "compiling with Rubber ..."
-            silent execute "setlocal makeprg=" . l:special_tex_compiler . "\\ -dfs\\ %"
+            silent execute "setlocal makeprg=" . l:special_tex_compiler . "\\ -dfsq\\ %"
             setlocal errorformat=%f:%l:\ %m
             silent make %
         else
             echon "compiling ..."
             let b:tex_flavor = 'pdflatex'
             compiler tex
-            set makeprg=pdflatex\ \-file\-line\-error\ \-interaction=nonstopmode\ $*\\\|\ grep\ \-P\ ':\\d{1,5}:\ '
-            set errorformat=%f:%l:\ %m
+            setlocal makeprg=pdflatex\ \-file\-line\-error\ \-interaction=nonstopmode\ $*\\\|\ grep\ \-P\ ':\\d{1,5}:\ '
+            setlocal errorformat=%f:%l:\ %m
             silent make %
         endif
     endif
@@ -195,9 +196,15 @@ function! <SID>BuildTexPdf(view_results, ...)
     " set/report compile status
     if v:shell_error
         let l:success = 0
-        " let l:wheight = winheight(bufnr("%")) / 2
-        " execute "copen ".l:wheight
-		copen
+        if len(getqflist()) > 0
+            copen   " open quickfix window
+            wincmd p " go back to calling buffer
+            .cc     " go to first error
+        else
+            echohl WarningMsg
+            echomsg "compile failed with errors"
+            echohl None
+        endif
     else
         let l:success = 1
         cclose
