@@ -193,6 +193,9 @@ function! <SID>BuildTexPdf(view_results, ...)
         endif
     endif
 
+    " redraw vim
+    :redraw!
+
     " set/report compile status
     if v:shell_error
         let l:success = 0
@@ -241,6 +244,9 @@ function! <SID>ViewTexPdf(...)
         elseif executable('cygstart')
             silent execute "! cygstart ".l:target
         endif
+    endif
+    if v:shell_error
+        redraw!
     endif
 endfunction
 
