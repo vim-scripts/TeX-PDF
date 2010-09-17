@@ -14,19 +14,29 @@
 " Features
 " ========
 "
-"     - runs "make" if a Makefile is found, otherwise invokes Rubber (if
-"       installed) or pdflatex (otherwise) on the current file
-"     - successful builds will result in PDF being opened/refreshed in
-"       the default external viewer
-"     - unsuccessful builds will result in the
-"       QuickFix buffer being opened and to list the errors, with line numbers,
-"       description etc.
+"     - Runs "make" if a Makefile is found, otherwise invokes Rubber (if
+"       installed) or pdflatex (otherwise) on the current file.
+"     - Successful builds will result in PDF being opened/refreshed in the
+"       default external viewer.
+"     - Unsuccessful builds will result in the QuickFix buffer being opened and
+"       to list the errors, with line numbers, description etc.
+"
+" Usage
+" =====
+" Once the plugin is installed (see below), when you have a TeX or LaTeX document
+" open in the buffer, type '\r' or <Shift-F9> to compile the document and open
+" (or refresh) the resulting PDF in your system's default PDF viewer. To just
+" compile the document to PDF without opening it, type '\m' or <F9>.  If there
+" are any compile errors, a window will open and list all the problematic lines.
+" As usual, you can navigate forward and backward through this list using the
+" ':cnext' and ':cprev' commands, and you will automatically be taken to the
+" corresponding line in the source document.
 "
 " Working with Rubber
 " ===================
 "
 " This plugin will work quite happily with the stock TeX/LaTeX tools found on
-" most systems. As described below, for example, this plugin will run "make"
+" most systems. As described above, for example, this plugin will run "make"
 " if a Makefile is found in the current working directory (by-passing Rubber,
 " even if installed), and fall back to the standard "pdflatex" if Rubber is
 " not installed.
@@ -39,7 +49,7 @@
 " correctly built, while this plug-in takes care of opening/refreshing the PDF
 " view on successful builds, as well as providing for a *clean* view of the
 " errors on an unsuccessful build.
-"
+
 " Operation
 " =========
 "
@@ -85,7 +95,17 @@
 " key mapping by including the following in your '~/.vimrc':
 "
 "     let g:tex_pdf_map_func_keys = 0
-
+"
+" You can, of course, map any keys that you want to the commands. For example,
+" by including the following in your '~/.vimrc', you will map Command-V to
+" "compile and view" command and Command-T to the "just compile" command in
+" both normal and insert modes:
+"
+"     noremap <silent> <D-V> <Esc>:BuildAndViewTexPdf<CR>
+"     inoremap <silent> <D-V> <Esc>:BuildAndViewTexPdf<CR>
+"     noremap <silent> <D-T> <Esc>:BuildTexPdf<CR>
+"     inoremap <silent> <D-T> <Esc>:BuildTexPdf<CR>
+"
 " Installation
 " ============
 "
