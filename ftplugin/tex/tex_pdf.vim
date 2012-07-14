@@ -111,9 +111,9 @@
 "
 " To install this plugin, copy this file to "./vim/ftplugin/tex".
 
-if exists('b:tex_pdf_mapped')
-	finish
-endif
+" if exists('b:tex_pdf_mapped')
+" 	finish
+" endif
 
 let b:tex_pdf_mapped = 1
 
@@ -219,9 +219,13 @@ function! <SID>BuildTexPdf(view_results, ...)
     " set/report compile status
     if v:shell_error
         let l:success = 0
-        if len(getqflist()) > 0
-            copen   " open quickfix window
-            1cc     " go to first error
+        let l:entries = getqflist()
+        if len(l:entries) > 0
+            copen       " open quickfix window
+            wincmd p    " jump back to previous window
+            call cursor(l:entries[0]['lnum'], 0) " go to error line
+            execute "normal! ^"
+            " 1cc     " go to first error
         else
             echohl WarningMsg
             echomsg "compile failed with errors"
