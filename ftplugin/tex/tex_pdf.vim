@@ -111,9 +111,9 @@
 "
 " To install this plugin, copy this file to "./vim/ftplugin/tex".
 
-" if exists('b:tex_pdf_mapped')
-" 	finish
-" endif
+if exists('b:tex_pdf_mapped')
+	finish
+endif
 
 let b:tex_pdf_mapped = 1
 
