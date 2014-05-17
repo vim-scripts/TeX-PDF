@@ -207,7 +207,7 @@ function! <SID>BuildTexPdf(view_results, ...)
             echon "compiling ..."
             let b:tex_flavor = 'pdflatex'
             compiler tex
-            setlocal makeprg=pdflatex\ \-file\-line\-error\ \-interaction=nonstopmode\ $*\\\|\ grep\ \-P\ ':\\d{1,5}:\ '
+            setlocal makeprg=pdflatex\ \-shell-escape\ \-file\-line\-error\ \-interaction=nonstopmode\ $*\\\|\ grep\ \-P\ ':\\d{1,5}:\ '
             setlocal errorformat=%f:%l:\ %m
             silent make %
         endif
